@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ioc-api-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ioc-api-app
+  template:
+    metadata:
+      labels:
+        app: ioc-api-app
+    spec:
+      containers:
+        - name: ioc-api-app
+          image: "{{IMAGE_REPO}}:2024.02.00-0001-alpha"
+          env:
+            - name: SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ioc-api-configmap
+                  key: SERVER_URL
+          ports:
+            - containerPort: 80
